@@ -61,11 +61,11 @@ Plans:
   3. Enabling the weekend toggle makes Saturday and Sunday clickable and included in calculations; disabling it excludes them; toggle state persists after page reload
   4. Arrow keys navigate between day cells and Enter/Space cycles the focused cell's status
   5. All status colors and the average/totals display remain clearly readable when the OS is set to dark mode
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: StatsDisplay component (average + totals, live recalculation, "—" fallback)
-- [ ] 03-02: Weekend toggle UI with cookie persistence, keyboard navigation, dark mode CSS, and cache-busting setup
+- [ ] 03-01-PLAN.md — Stats display module (average + per-status totals), buildDayObjects helper, unit tests, HTML/CSS/app.js wiring
+- [ ] 03-02-PLAN.md — Weekend toggle with cookie persistence, roving tabindex keyboard navigation, disabled weekend CSS, focus ring, dark mode media query
 
 ## Progress
 
