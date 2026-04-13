@@ -121,8 +121,43 @@ body {
 .legend-swatch[data-status="time-off"]   { background: #9E9E9E; }
 .legend-swatch[data-status="wfa"]        { background: #FF9800; }
 
+/* Stats panel */
+#stats {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.stats-average {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #212121;
+}
+
+.stats-totals {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0;
+}
+
+.stat-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+.stat-dot[data-status="in-office"]  { background: #4CAF50; }
+.stat-dot[data-status="at-home"]    { background: #2196F3; }
+.stat-dot[data-status="time-off"]   { background: #9E9E9E; }
+.stat-dot[data-status="wfa"]        { background: #FF9800; }
+
 @media (max-width: 480px) {
   body { padding: 8px; }
   .cal-cell { min-height: 40px; }
   .cal-cell__num { font-size: 0.7rem; }
+  .stats-average { font-size: 1.25rem; }
+  .stats-totals { font-size: 0.75rem; }
 }

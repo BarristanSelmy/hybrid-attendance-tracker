@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hybrid Attendance Tracker</title>
-  <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
   <div id="app">
@@ -40,8 +40,13 @@
         <span class="legend-swatch" data-status="wfa"></span>WFA
       </span>
     </div>
+
+    <section id="stats" aria-label="Attendance statistics">
+      <p id="stats-average" class="stats-average"></p>
+      <p id="stats-totals" class="stats-totals"></p>
+    </section>
   </div>
 
-  <script type="module" src="src/app.js?v=1"></script>
+  <script type="module" src="src/app.js?v=2"></script>
 </body>
 </html>

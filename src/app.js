@@ -1,14 +1,21 @@
 // src/app.js
 import { AppState } from './app-state.js';
 import { renderCalendar, renderHeader } from './calendar.js';
+import { renderStats } from './stats.js';
 
 const grid = document.getElementById('cal-grid');
 const title = document.getElementById('cal-title');
+const avgEl = document.getElementById('stats-average');
+const totalsEl = document.getElementById('stats-totals');
 
-// Register subscriber — re-renders both grid and title on every state change
+// Default off per FR-4; Plan 02 will wire the cookie read
+let weekendsEnabled = false;
+
+// Register subscriber — re-renders calendar, header, and stats on every state change
 AppState.subscribe((state) => {
   renderCalendar(grid, state);
   renderHeader(title, state);
+  renderStats(avgEl, totalsEl, state, weekendsEnabled);
 });
 
 // Month navigation buttons
