@@ -12,7 +12,8 @@ Accurately calculate average in-office days per week, excluding time off and wor
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Attendance data persisted in localStorage across visits — Validated in Phase 1: Foundation
+- [x] User preferences (weekend toggle, etc.) stored in cookies — Validated in Phase 1: Foundation
 
 ### Active
 
@@ -24,8 +25,6 @@ Accurately calculate average in-office days per week, excluding time off and wor
 - [ ] Average in-office days per week calculation: in-office days / (total days - time off - WFA days)
 - [ ] Month navigation to view past and future months
 - [ ] Current month shown by default
-- [ ] Attendance data persisted in localStorage across visits
-- [ ] User preferences (weekend toggle, etc.) stored in cookies
 - [ ] Static HTML suitable for GitHub Pages deployment (no build step, no server)
 
 ### Out of Scope
@@ -59,4 +58,4 @@ Accurately calculate average in-office days per week, excluding time off and wor
 | Personal-only scope | Keeps v1 simple, no auth/team complexity | — Pending |
 
 ---
-*Last updated: 2026-04-13 after initialization*
+*Last updated: 2026-04-13 after Phase 1: Foundation complete*
