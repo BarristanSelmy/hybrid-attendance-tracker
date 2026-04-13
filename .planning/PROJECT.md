@@ -14,18 +14,18 @@ Accurately calculate average in-office days per week, excluding time off and wor
 
 - [x] Attendance data persisted in localStorage across visits — Validated in Phase 1: Foundation
 - [x] User preferences (weekend toggle, etc.) stored in cookies — Validated in Phase 1: Foundation
+- [x] Monthly calendar grid showing all days of the current month — Validated in Phase 2: Calendar and Core Loop
+- [x] Click/tap each day to cycle through statuses — Validated in Phase 2: Calendar and Core Loop
+- [x] Color-coded status indicators for each status type — Validated in Phase 2: Calendar and Core Loop
+- [x] Month navigation to view past and future months — Validated in Phase 2: Calendar and Core Loop
+- [x] Current month shown by default — Validated in Phase 2: Calendar and Core Loop
+- [x] Static HTML suitable for GitHub Pages deployment — Validated in Phase 2: Calendar and Core Loop
 
 ### Active
 
-- [ ] Monthly calendar grid showing all days of the current month
-- [ ] Click/tap each day to cycle through statuses: in office, at home, time off, work from anywhere
-- [ ] Color-coded status indicators for each status type
 - [ ] Weekends marked as "off" by default (not counted)
 - [ ] Toggle to enable/disable weekend days for tracking
 - [ ] Average in-office days per week calculation: in-office days / (total days - time off - WFA days)
-- [ ] Month navigation to view past and future months
-- [ ] Current month shown by default
-- [ ] Static HTML suitable for GitHub Pages deployment (no build step, no server)
 
 ### Out of Scope
 
@@ -58,4 +58,4 @@ Accurately calculate average in-office days per week, excluding time off and wor
 | Personal-only scope | Keeps v1 simple, no auth/team complexity | — Pending |
 
 ---
-*Last updated: 2026-04-13 after Phase 1: Foundation complete*
+*Last updated: 2026-04-13 after Phase 2: Calendar and Core Loop complete*
