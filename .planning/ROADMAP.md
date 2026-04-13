@@ -13,7 +13,7 @@ Three phases deliver a fully working personal attendance tracker. Phase 1 builds
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Storage helpers, date utilities, and verified average calculation formula (completed 2026-04-13)
-- [ ] **Phase 2: Calendar and Core Loop** - Working calendar grid with click-to-cycle status, month navigation, and persistence
+- [x] **Phase 2: Calendar and Core Loop** - Working calendar grid with click-to-cycle status, month navigation, and persistence (completed 2026-04-13)
 - [ ] **Phase 3: Stats, Preferences, and Polish** - Stats display, weekend toggle, dark mode, keyboard nav, and deployment
 
 ## Phase Details
@@ -48,8 +48,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — AppState pub-sub object and CalendarGrid renderer with full unit test coverage
-- [ ] 02-02-PLAN.md — index.html, style.css, app.js bootstrap, event delegation wiring, and GitHub Pages deployment files
+- [x] 02-01-PLAN.md — AppState pub-sub object and CalendarGrid renderer with full unit test coverage
+- [x] 02-02-PLAN.md — index.html, style.css, app.js bootstrap, event delegation wiring, and GitHub Pages deployment files
 
 ### Phase 3: Stats, Preferences, and Polish
 **Goal**: The average calculation is displayed and live, the weekend toggle works and persists, and the app is accessible and visually complete in both light and dark modes
@@ -75,7 +75,7 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-04-13 |
-| 2. Calendar and Core Loop | 1/2 | In progress | - |
+| 2. Calendar and Core Loop | 2/2 | Complete     | 2026-04-13 |
 | 3. Stats, Preferences, and Polish | 0/2 | Not started | - |
 
 ## Requirement Coverage

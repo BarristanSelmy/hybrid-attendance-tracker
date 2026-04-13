@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 02-calendar-and-core-loop 02-01-PLAN.md
-last_updated: "2026-04-13T16:41:27Z"
+stopped_at: Completed 02-calendar-and-core-loop 02-02-PLAN.md
+last_updated: "2026-04-13T17:03:21Z"
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 
 ## Current Position
 
-Phase: 02 (Calendar and Core Loop) — EXECUTING
-Plan: 2 of 2
+Phase: 02 (Calendar and Core Loop) — COMPLETE
+Plan: 2 of 2 — COMPLETE
 
 ## Performance Metrics
 
@@ -71,6 +71,10 @@ Recent decisions affecting current work:
 - [Phase 02-01]: gridColumnStart = startOffset + 1 set only on first cell (d===1); CSS auto-placement handles the rest
 - [Phase 02-01]: renderCalendar captures today before cell loop to avoid midnight inconsistency during grid build
 - [Phase 02-01]: TDD vi.mock pattern: mock before dynamic import so AppState receives mock implementations at module load time
+- [Phase 02-02]: Event delegation listener on #cal-grid container in app.js only — survives innerHTML re-renders, never registered in calendar.js
+- [Phase 02-02]: CSS attribute selectors [data-status="value"] drive all status colors — no JS class manipulation needed
+- [Phase 02-02]: today indicator uses outline ring (outline: 2px solid #1565C0) not background fill — avoids conflict with status colors
+- [Phase 02-02]: ?v=1 cache-busting query params on both CSS and JS asset references in index.html
 
 ### Pending Todos
 
@@ -82,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-13T16:41:27Z
-Stopped at: Completed 02-calendar-and-core-loop 02-01-PLAN.md
+Last session: 2026-04-13T17:03:21Z
+Stopped at: Completed 02-calendar-and-core-loop 02-02-PLAN.md
 Resume file: None
