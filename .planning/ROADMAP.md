@@ -28,11 +28,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. All date construction uses the numeric Date constructor — no ISO string parsing — and produces correct local-time dates in negative UTC-offset timezones
   4. The average calculation returns the correct result for: normal mid-month mix, all-WFA month, all-time-off month, empty month (returns "—"), and toggled-weekend scenarios
   5. A schemaVersion key is present in every localStorage write, and a corrupt or missing payload falls back to empty state without throwing
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Storage adapter (localStorage + cookie helpers with try/catch, schemaVersion)
-- [ ] 01-02: Date utilities and average calculation function with edge-case verification
+- [ ] 01-01-PLAN.md — Test infrastructure, localStorage adapter (saveMonth/loadMonth/clearMonth with schemaVersion + try/catch), and cookie helpers (setCookie/getCookie/deleteCookie with Secure/SameSite=Lax)
+- [ ] 01-02-PLAN.md — Date construction utilities (numeric Date constructor only) and average in-office calculation formula with edge-case verification
 
 ### Phase 2: Calendar and Core Loop
 **Goal**: A fully interactive calendar exists where users can click days to set statuses and navigate months, with all data persisting across page reloads
