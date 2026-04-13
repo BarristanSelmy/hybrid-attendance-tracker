@@ -6,7 +6,7 @@ const MONTH_NAMES = [
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
-export function renderCalendar(container, state) {
+export function renderCalendar(container, state, weekendsEnabled) {
   const { year, month, days } = state;
 
   // Capture today once — never inside the cell loop (avoid midnight inconsistency)
@@ -38,6 +38,13 @@ export function renderCalendar(container, state) {
     cell.dataset.status = status;
     if (d === todayDay) cell.classList.add('cal-cell--today');
     if (d === 1) cell.style.gridColumnStart = String(startOffset + 1);
+
+    // Weekend detection — use numeric Date constructor per NFR-4 (no ISO string parsing)
+    const date = new Date(year, month - 1, d);
+    const dow = date.getDay();
+    const isWeekend = (dow === 0 || dow === 6);
+    if (isWeekend) cell.dataset.weekend = 'true';
+    if (isWeekend && !weekendsEnabled) cell.dataset.disabled = 'true';
 
     const num = document.createElement('span');
     num.className = 'cal-cell__num';
