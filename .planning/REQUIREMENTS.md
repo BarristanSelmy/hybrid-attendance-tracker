@@ -96,14 +96,14 @@ All localStorage and cookie operations wrapped in try/catch. App functions in a 
 | FR-8 | Phase 2 | Pending |
 | FR-9 | Phase 2 | Pending |
 | FR-10 | Phase 3 | Pending |
-| FR-11 | Phase 1 | Pending |
-| FR-12 | Phase 1 | Pending |
+| FR-11 | Phase 1 | Complete |
+| FR-12 | Phase 1 | Complete |
 | FR-13 | Phase 3 | Pending |
-| NFR-1 | Phase 1 | Pending |
+| NFR-1 | Phase 1 | Complete |
 | NFR-2 | Phase 2 | Pending |
 | NFR-3 | Phase 2 | Pending |
 | NFR-4 | Phase 1 | Pending |
-| NFR-5 | Phase 1 | Pending |
+| NFR-5 | Phase 1 | Complete |
 
 ---
 *Scoped: 2026-04-13*
