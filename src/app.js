@@ -72,36 +72,42 @@ grid.addEventListener('click', (e) => {
 });
 
 // Keyboard navigation — roving tabindex with arrow keys, Enter/Space to cycle status
-grid.addEventListener('keydown', (e) => {
-  const cells = [...grid.querySelectorAll('[data-day]:not([data-disabled="true"])')];
-  const focused = grid.querySelector('[data-day][tabindex="0"]');
-  if (!focused || cells.length === 0) return;
+// Extracted as an exported function for testability (Strategy pattern).
+// Registers a single keydown listener on the grid container.
+export function initKeyboardNav(gridEl) {
+  gridEl.addEventListener('keydown', (e) => {
+    const cells = [...gridEl.querySelectorAll('[data-day]:not([data-disabled="true"])')];
+    const focused = gridEl.querySelector('[data-day][tabindex="0"]');
+    if (!focused || cells.length === 0) return;
 
-  const idx = cells.indexOf(focused);
+    const idx = cells.indexOf(focused);
 
-  if (e.key === 'Enter' || e.key === ' ') {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      AppState.cycleDay(focused.dataset.day);
+      return;
+    }
+
+    let delta = 0;
+    if (e.key === 'ArrowRight') delta = 1;
+    else if (e.key === 'ArrowLeft') delta = -1;
+    else if (e.key === 'ArrowDown') delta = 7;
+    else if (e.key === 'ArrowUp') delta = -7;
+    else return;
+
+    // Wrap using modular arithmetic — natural grid feel per user decision
+    const next = ((idx + delta) % cells.length + cells.length) % cells.length;
     e.preventDefault();
-    AppState.cycleDay(focused.dataset.day);
-    return;
-  }
 
-  let delta = 0;
-  if (e.key === 'ArrowRight') delta = 1;
-  else if (e.key === 'ArrowLeft') delta = -1;
-  else if (e.key === 'ArrowDown') delta = 7;
-  else if (e.key === 'ArrowUp') delta = -7;
-  else return;
+    // Update all cells (including disabled) so only one has tabindex=0
+    gridEl.querySelectorAll('[data-day]').forEach(c => c.setAttribute('tabindex', '-1'));
+    cells[next].setAttribute('tabindex', '0');
+    cells[next].focus();
+    focusedDay = Number(cells[next].dataset.day);
+  });
+}
 
-  // Wrap using modular arithmetic — natural grid feel per user decision
-  const next = ((idx + delta) % cells.length + cells.length) % cells.length;
-  e.preventDefault();
-
-  // Update all cells (including disabled) so only one has tabindex=0
-  grid.querySelectorAll('[data-day]').forEach(c => c.setAttribute('tabindex', '-1'));
-  cells[next].setAttribute('tabindex', '0');
-  cells[next].focus();
-  focusedDay = Number(cells[next].dataset.day);
-});
+initKeyboardNav(grid);
 
 // Initial render — loads persisted data for current month, triggers subscriber
 AppState.loadCurrentMonth();
