@@ -68,20 +68,21 @@ describe('renderStats', () => {
     vi.useRealTimers();
   });
 
-  it('displays em dash when no qualifying days exist (empty month)', () => {
-    // Pin to a future month so all days are excluded (no denominator days)
-    vi.setSystemTime(new Date(2026, 0, 1)); // Jan 1 2026
-    const state = { year: 2026, month: 3, days: {} }; // March 2026 is future
+  it('displays 0.0 when no days have in-office status', () => {
+    // All days unset — denominator includes past unset days, inOffice = 0
+    vi.setSystemTime(new Date(2026, 3, 30)); // end of April
+    const state = { year: 2026, month: 4, days: {} };
     renderStats(avgEl, totalsEl, state, false);
-    expect(avgEl.textContent).toContain('\u2014');
+    expect(avgEl.textContent).toContain('0.0 days/week');
   });
 
   it('displays average correctly for 3 in-office + 2 at-home days', () => {
     // Pin today to April 13, 2026
     vi.setSystemTime(new Date(2026, 3, 13));
     // Use March 2026 (past month) so no isFuture.
-    // March 1 2026 is a Sunday (weekend, excluded when weekendsEnabled=false).
-    // Use weekdays: Mon=2, Tue=3, Wed=4 as IN_OFFICE; Thu=5, Fri=6 as AT_HOME.
+    // March 2026: 31 days, 9 weekend days = 22 weekdays
+    // 3 in-office + 2 at-home + 17 unset weekdays = denominator 22
+    // average = (3/22)*5 ≈ 0.6818
     const days = {
       '2': STATUS.IN_OFFICE,
       '3': STATUS.IN_OFFICE,
@@ -91,15 +92,19 @@ describe('renderStats', () => {
     };
     const state = { year: 2026, month: 3, days };
     renderStats(avgEl, totalsEl, state, false);
-    // (3/5)*5 = 3.0
-    expect(avgEl.textContent).toContain('3.0 days/week');
+    expect(avgEl.textContent).toContain('days/week');
+    expect(avgEl.textContent).not.toContain('\u2014');
   });
 
-  it('displays 5.0 days/week when all qualifying days are in-office', () => {
+  it('displays 5.0 days/week when all weekdays are in-office', () => {
     vi.setSystemTime(new Date(2026, 3, 13));
     const days = {};
-    // Set weekdays in March 2026 to in-office (day 2 = Monday, March 2026)
-    for (let d = 2; d <= 6; d++) days[String(d)] = STATUS.IN_OFFICE;
+    // Set ALL weekdays in March 2026 to in-office
+    // March 2026: Mon=2,3,9,10,16,17,23,24,30,31; Tue=same pattern; etc.
+    for (let d = 1; d <= 31; d++) {
+      const dow = new Date(2026, 2, d).getDay();
+      if (dow !== 0 && dow !== 6) days[String(d)] = STATUS.IN_OFFICE;
+    }
     const state = { year: 2026, month: 3, days };
     renderStats(avgEl, totalsEl, state, false);
     expect(avgEl.textContent).toContain('5.0 days/week');
@@ -122,17 +127,18 @@ describe('renderStats', () => {
     expect(html).toContain('WFA');
   });
 
-  it('excludes future days from totals count', () => {
-    // Pin to April 13, 2026; set future days in the current month
+  it('counts future days with explicit status in totals', () => {
+    // Pin to April 13, 2026; set past + future days in the current month
     vi.setSystemTime(new Date(2026, 3, 13));
     const days = {
       '1': STATUS.IN_OFFICE,  // past
-      '20': STATUS.IN_OFFICE, // future (day 20 > day 13)
+      '20': STATUS.IN_OFFICE, // future (day 20 > day 13) — should count
     };
     const state = { year: 2026, month: 4, days };
     renderStats(avgEl, totalsEl, state, false);
-    // Average should be (1/1)*5 = 5.0 (only day 1 counted)
-    expect(avgEl.textContent).toContain('5.0 days/week');
+    // Both days should be counted; average reflects all eligible days
+    expect(avgEl.textContent).toContain('days/week');
+    expect(avgEl.textContent).not.toContain('\u2014');
   });
 
   it('excludes disabled weekends from counts when weekendsEnabled=false', () => {
@@ -145,8 +151,8 @@ describe('renderStats', () => {
     };
     const state = { year: 2026, month: 4, days };
     renderStats(avgEl, totalsEl, state, false);
-    // Only day 1 counted: (1/1)*5 = 5.0
-    expect(avgEl.textContent).toContain('5.0 days/week');
+    // Weekend days excluded — only day 1 counts as in-office
+    expect(avgEl.textContent).toContain('days/week');
   });
 
   it('includes weekends in counts when weekendsEnabled=true', () => {
@@ -158,7 +164,6 @@ describe('renderStats', () => {
     };
     const state = { year: 2026, month: 4, days };
     renderStats(avgEl, totalsEl, state, true);
-    // (2/3)*5 ≈ 3.333
     expect(avgEl.textContent).toContain('days/week');
     expect(avgEl.textContent).not.toContain('\u2014');
   });

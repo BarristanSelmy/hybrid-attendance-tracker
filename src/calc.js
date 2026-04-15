@@ -2,16 +2,20 @@ import { STATUS } from './storage.js';
 
 /**
  * Calculate average in-office days per week.
- * Formula: (inOffice / denominator) * 5
+ * Formula: (inOffice / eligibleDays) * 5
  *
- * Denominator includes only in-office + at-home days.
- * Excluded from denominator: unset, future, time-off, WFA, disabled weekends.
+ * Denominator includes ALL eligible working days in the month — not just days
+ * with an explicit status. This prevents a single in-office day from reading 5.0.
  *
- * Returns null (not 0) when denominator is zero — the UI layer displays null as "---".
+ * Eligible = not a disabled weekend, not time-off, not WFA, not a future unset day.
+ * Past unset days ARE eligible (they're workdays you didn't track).
+ * Future days with an explicit status ARE eligible (they're planned days).
+ *
+ * Returns 0 when denominator is zero (no eligible days).
  *
  * @param {Array<{status: string, isWeekend: boolean, isFuture: boolean}>} days
  * @param {boolean} weekendsEnabled
- * @returns {number|null} Average days per week, or null if denominator is 0
+ * @returns {number} Average days per week
  */
 export function calcAverage(days, weekendsEnabled) {
   let inOffice = 0;
@@ -19,19 +23,16 @@ export function calcAverage(days, weekendsEnabled) {
 
   for (const day of days) {
     if (day.isWeekend && !weekendsEnabled) continue;
-    if (day.isFuture) continue;
-    if (day.status === STATUS.UNSET) continue;
+    if (day.isFuture && day.status === STATUS.UNSET) continue;
     if (day.status === STATUS.TIME_OFF) continue;
     if (day.status === STATUS.WFA) continue;
 
+    denominator++;
     if (day.status === STATUS.IN_OFFICE) {
       inOffice++;
-      denominator++;
-    } else if (day.status === STATUS.AT_HOME) {
-      denominator++;
     }
   }
 
-  if (denominator === 0) return null;
+  if (denominator === 0) return 0;
   return (inOffice / denominator) * 5;
 }
