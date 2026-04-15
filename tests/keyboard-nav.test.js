@@ -12,7 +12,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 // Mock app-state before importing the module under test
 vi.mock('../src/app-state.js', () => ({
   AppState: {
-    cycleDay: vi.fn(),
+    setDay: vi.fn(),
     subscribe: vi.fn(),
     notify: vi.fn(),
     loadCurrentMonth: vi.fn(),
@@ -55,7 +55,7 @@ vi.mock('../src/stats.js', () => ({
 // we provide stubs so the module can be imported without crashing.
 function setupAppDom() {
   const ids = ['cal-grid', 'cal-title', 'stats-average', 'stats-totals',
-               'toggle-weekends', 'btn-prev', 'btn-next'];
+               'toggle-weekends', 'btn-prev', 'btn-next', 'brush-bar'];
   for (const id of ids) {
     if (!document.getElementById(id)) {
       const el = document.createElement(id === 'toggle-weekends' ? 'input' : 'div');
@@ -194,20 +194,20 @@ describe('initKeyboardNav — Enter and Space', () => {
     vi.clearAllMocks();
   });
 
-  it('Enter on cell with data-day="5" calls AppState.cycleDay with "5"', () => {
+  it('Enter on cell with data-day="5" calls AppState.setDay with day and active brush', () => {
     const { grid, cells } = buildGrid(10);
     initKeyboardNav(grid);
     cells.forEach((c, i) => c.setAttribute('tabindex', i === 4 ? '0' : '-1'));
     pressKey(grid, 'Enter');
-    expect(AppState.cycleDay).toHaveBeenCalledWith('5');
+    expect(AppState.setDay).toHaveBeenCalledWith('5', 'in-office');
   });
 
-  it('Space on cell with data-day="5" calls AppState.cycleDay with "5"', () => {
+  it('Space on cell with data-day="5" calls AppState.setDay with day and active brush', () => {
     const { grid, cells } = buildGrid(10);
     initKeyboardNav(grid);
     cells.forEach((c, i) => c.setAttribute('tabindex', i === 4 ? '0' : '-1'));
     pressKey(grid, ' ');
-    expect(AppState.cycleDay).toHaveBeenCalledWith('5');
+    expect(AppState.setDay).toHaveBeenCalledWith('5', 'in-office');
   });
 });
 

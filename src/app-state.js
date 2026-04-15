@@ -1,14 +1,6 @@
 import { loadMonth, saveMonth, STATUS } from './storage.js';
 import { toMonthKey } from './dates.js';
 
-const STATUS_CYCLE = [
-  STATUS.UNSET,
-  STATUS.IN_OFFICE,
-  STATUS.AT_HOME,
-  STATUS.TIME_OFF,
-  STATUS.WFA,
-];
-
 export const AppState = {
   year: new Date().getFullYear(),
   month: new Date().getMonth() + 1,  // 1-indexed
@@ -37,14 +29,12 @@ export const AppState = {
     this.loadCurrentMonth();
   },
 
-  cycleDay(dayNum) {
+  setDay(dayNum, status) {
     const current = this.days[dayNum] || STATUS.UNSET;
-    const idx = STATUS_CYCLE.indexOf(current);
-    const next = STATUS_CYCLE[(idx + 1) % STATUS_CYCLE.length];
-    if (next === STATUS.UNSET) {
+    if (current === status) {
       delete this.days[dayNum];
     } else {
-      this.days[dayNum] = next;
+      this.days[dayNum] = status;
     }
     saveMonth(toMonthKey(this.year, this.month), this.days);
     this.notify();

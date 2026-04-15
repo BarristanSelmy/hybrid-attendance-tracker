@@ -109,33 +109,46 @@ body {
   outline: none;
 }
 
-.cal-legend {
+.brush-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 6px;
   margin-top: 12px;
-  font-size: 0.8rem;
-  color: #555;
+  justify-content: center;
 }
 
-.legend-item {
-  display: flex;
+.brush-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: #f0f0f0;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.legend-swatch {
+.brush-btn:hover { background: #e0e0e0; }
+
+.brush-btn--active {
+  border-color: #212121;
+  background: #e8e8e8;
+  font-weight: 600;
+}
+
+.brush-swatch {
   display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 3px;
-  border: 1px solid rgba(0,0,0,0.1);
 }
 
-.legend-swatch[data-status="in-office"]  { background: #4CAF50; }
-.legend-swatch[data-status="at-home"]    { background: #2196F3; }
-.legend-swatch[data-status="time-off"]   { background: #9E9E9E; }
-.legend-swatch[data-status="wfa"]        { background: #FF9800; }
+.brush-swatch[data-status="in-office"]  { background: #4CAF50; }
+.brush-swatch[data-status="at-home"]    { background: #2196F3; }
+.brush-swatch[data-status="time-off"]   { background: #9E9E9E; }
+.brush-swatch[data-status="wfa"]        { background: #FF9800; }
 
 /* Stats panel */
 #stats {
@@ -235,10 +248,20 @@ body {
     outline-color: #42A5F5;
   }
 
-  .legend-swatch[data-status="in-office"]  { background: #388E3C; }
-  .legend-swatch[data-status="at-home"]    { background: #64B5F6; }
-  .legend-swatch[data-status="time-off"]   { background: #757575; }
-  .legend-swatch[data-status="wfa"]        { background: #FFB74D; }
+  .brush-btn {
+    background: #1e1e1e;
+    color: #e0e0e0;
+  }
+  .brush-btn:hover { background: #2a2a2a; }
+  .brush-btn--active {
+    border-color: #e0e0e0;
+    background: #2a2a2a;
+  }
+
+  .brush-swatch[data-status="in-office"]  { background: #388E3C; }
+  .brush-swatch[data-status="at-home"]    { background: #64B5F6; }
+  .brush-swatch[data-status="time-off"]   { background: #757575; }
+  .brush-swatch[data-status="wfa"]        { background: #FFB74D; }
 
   .stat-dot[data-status="in-office"]  { background: #388E3C; }
   .stat-dot[data-status="at-home"]    { background: #64B5F6; }
@@ -252,12 +275,6 @@ body {
     color: #bdbdbd;
   }
 
-  .cal-legend {
-    color: #bdbdbd;
-  }
-  .legend-swatch {
-    border-color: rgba(255,255,255,0.1);
-  }
 
   .cal-preferences {
     color: #bdbdbd;

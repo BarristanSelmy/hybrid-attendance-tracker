@@ -18,51 +18,44 @@ vi.mock('../src/dates.js', () => ({
 const { AppState } = await import('../src/app-state.js');
 const { saveMonth, loadMonth } = await import('../src/storage.js');
 
-describe('AppState.cycleDay', () => {
+describe('AppState.setDay', () => {
   beforeEach(() => {
     AppState.days = {};
     AppState._subscribers = [];
     vi.clearAllMocks();
   });
 
-  it('sets days[5] = in-office when key is absent', () => {
-    AppState.cycleDay('5');
+  it('sets a day to the given status', () => {
+    AppState.setDay('5', 'in-office');
     expect(AppState.days['5']).toBe('in-office');
   });
 
-  it('cycles in-office → at-home', () => {
+  it('clears a day when same status is applied again (toggle off)', () => {
     AppState.days['5'] = 'in-office';
-    AppState.cycleDay('5');
-    expect(AppState.days['5']).toBe('at-home');
-  });
-
-  it('cycles at-home → time-off', () => {
-    AppState.days['5'] = 'at-home';
-    AppState.cycleDay('5');
-    expect(AppState.days['5']).toBe('time-off');
-  });
-
-  it('cycles time-off → wfa', () => {
-    AppState.days['5'] = 'time-off';
-    AppState.cycleDay('5');
-    expect(AppState.days['5']).toBe('wfa');
-  });
-
-  it('deletes the key entirely when wfa cycles back to unset', () => {
-    AppState.days['5'] = 'wfa';
-    AppState.cycleDay('5');
+    AppState.setDay('5', 'in-office');
     expect('5' in AppState.days).toBe(false);
   });
 
-  it('calls saveMonth after each cycleDay call', () => {
-    AppState.cycleDay('5');
+  it('replaces an existing status with a different one', () => {
+    AppState.days['5'] = 'in-office';
+    AppState.setDay('5', 'at-home');
+    expect(AppState.days['5']).toBe('at-home');
+  });
+
+  it('sets from unset to any status', () => {
+    AppState.setDay('10', 'time-off');
+    expect(AppState.days['10']).toBe('time-off');
+  });
+
+  it('calls saveMonth after each setDay call', () => {
+    AppState.setDay('5', 'in-office');
     expect(saveMonth).toHaveBeenCalledOnce();
   });
 
-  it('calls notify after cycleDay', () => {
+  it('calls notify after setDay', () => {
     const spy = vi.fn();
     AppState.subscribe(spy);
-    AppState.cycleDay('5');
+    AppState.setDay('5', 'wfa');
     expect(spy).toHaveBeenCalledOnce();
   });
 });
@@ -156,7 +149,6 @@ describe('AppState.loadCurrentMonth', () => {
     loadMonth.mockReturnValue({ schemaVersion: 1, days: storedDays });
     AppState.loadCurrentMonth();
     expect(AppState.days).toEqual(storedDays);
-    // Verify it's a copy, not the same reference
     expect(AppState.days).not.toBe(storedDays);
   });
 

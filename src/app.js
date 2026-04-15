@@ -3,12 +3,14 @@ import { AppState } from './app-state.js';
 import { renderCalendar, renderHeader } from './calendar.js';
 import { renderStats } from './stats.js';
 import { getCookie, setCookie } from './cookies.js';
+import { STATUS } from './storage.js';
 
 const grid = document.getElementById('cal-grid');
 const title = document.getElementById('cal-title');
 const avgEl = document.getElementById('stats-average');
 const totalsEl = document.getElementById('stats-totals');
 const toggle = document.getElementById('toggle-weekends');
+const brushBar = document.getElementById('brush-bar');
 
 // Cookie name for weekend preference
 const COOKIE_WEEKENDS = 'weekends-enabled';
@@ -19,6 +21,9 @@ let weekendsEnabled = getCookie(COOKIE_WEEKENDS) === 'true';
 // Sync checkbox to persisted state on load
 toggle.checked = weekendsEnabled;
 
+// Active brush — which status gets painted on day click
+let activeStatus = STATUS.IN_OFFICE;
+
 // Track focused day for roving tabindex restoration after re-renders
 let focusedDay = null;
 
@@ -27,7 +32,6 @@ function restoreRovingTabindex() {
   const cells = [...grid.querySelectorAll('[data-day]')];
   if (cells.length === 0) return;
 
-  // Find target cell: previously focused day, or today, or first cell
   let target = null;
   if (focusedDay) {
     target = cells.find(c => c.dataset.day === String(focusedDay));
@@ -63,17 +67,23 @@ toggle.addEventListener('change', () => {
   AppState.notify();
 });
 
-// Day click via event delegation — one listener on container, never on cells
-// closest('[data-day]') handles clicks on the inner <span> (date number)
+// Brush bar — click a button to select the active status
+brushBar.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-brush]');
+  if (!btn) return;
+  activeStatus = btn.dataset.brush;
+  brushBar.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('brush-btn--active'));
+  btn.classList.add('brush-btn--active');
+});
+
+// Day click via event delegation — paint with active brush, toggle off on second click
 grid.addEventListener('click', (e) => {
   const cell = e.target.closest('[data-day]');
   if (!cell || cell.dataset.disabled === 'true') return;
-  AppState.cycleDay(cell.dataset.day);
+  AppState.setDay(cell.dataset.day, activeStatus);
 });
 
-// Keyboard navigation — roving tabindex with arrow keys, Enter/Space to cycle status
-// Extracted as an exported function for testability (Strategy pattern).
-// Registers a single keydown listener on the grid container.
+// Keyboard navigation — roving tabindex with arrow keys, Enter/Space to paint
 export function initKeyboardNav(gridEl) {
   gridEl.addEventListener('keydown', (e) => {
     const cells = [...gridEl.querySelectorAll('[data-day]:not([data-disabled="true"])')];
@@ -84,7 +94,7 @@ export function initKeyboardNav(gridEl) {
 
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      AppState.cycleDay(focused.dataset.day);
+      AppState.setDay(focused.dataset.day, activeStatus);
       return;
     }
 
@@ -95,11 +105,9 @@ export function initKeyboardNav(gridEl) {
     else if (e.key === 'ArrowUp') delta = -7;
     else return;
 
-    // Wrap using modular arithmetic — natural grid feel per user decision
     const next = ((idx + delta) % cells.length + cells.length) % cells.length;
     e.preventDefault();
 
-    // Update all cells (including disabled) so only one has tabindex=0
     gridEl.querySelectorAll('[data-day]').forEach(c => c.setAttribute('tabindex', '-1'));
     cells[next].setAttribute('tabindex', '0');
     cells[next].focus();
