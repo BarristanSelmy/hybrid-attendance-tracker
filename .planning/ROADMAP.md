@@ -64,7 +64,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Stats display module (average + per-status totals), buildDayObjects helper, unit tests, HTML/CSS/app.js wiring
+- [x] 03-01-PLAN.md — Stats display module (average + per-status totals), buildDayObjects helper, unit tests, HTML/CSS/app.js wiring
 - [ ] 03-02-PLAN.md — Weekend toggle with cookie persistence, roving tabindex keyboard navigation, disabled weekend CSS, focus ring, dark mode media query
 
 ## Progress
@@ -76,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-04-13 |
 | 2. Calendar and Core Loop | 2/2 | Complete     | 2026-04-13 |
-| 3. Stats, Preferences, and Polish | 0/2 | Not started | - |
+| 3. Stats, Preferences, and Polish | 1/2 | In Progress|  |
 
 ## Requirement Coverage
 
