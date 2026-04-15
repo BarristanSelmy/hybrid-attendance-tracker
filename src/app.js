@@ -67,7 +67,7 @@ toggle.addEventListener('change', () => {
 // closest('[data-day]') handles clicks on the inner <span> (date number)
 grid.addEventListener('click', (e) => {
   const cell = e.target.closest('[data-day]');
-  if (!cell) return;
+  if (!cell || cell.dataset.disabled === 'true') return;
   AppState.cycleDay(cell.dataset.day);
 });
 

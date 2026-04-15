@@ -42,9 +42,7 @@ export function renderStats(avgEl, totalsEl, state, weekendsEnabled) {
   const dayObjs = buildDayObjects(state.year, state.month, state.days, weekendsEnabled);
   const avg = calcAverage(dayObjs, weekendsEnabled);
 
-  avgEl.textContent = avg === null
-    ? 'Average: \u2014'
-    : 'Average: ' + avg.toFixed(1) + ' days/week';
+  avgEl.textContent = 'Average: ' + avg.toFixed(1) + ' days/week';
 
   const counts = {
     [STATUS.IN_OFFICE]: 0,
@@ -54,7 +52,7 @@ export function renderStats(avgEl, totalsEl, state, weekendsEnabled) {
   };
 
   for (const d of dayObjs) {
-    if (d.isFuture) continue;
+    if (d.isFuture && d.status === STATUS.UNSET) continue;
     if (d.isWeekend && !weekendsEnabled) continue;
     if (d.status === STATUS.UNSET) continue;
     if (Object.prototype.hasOwnProperty.call(counts, d.status)) {
